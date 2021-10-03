@@ -193,6 +193,7 @@ const BookShow = (props) => {
 
   return (
     <div>
+      {console.log("renderinggggg")}
       <Header baseUrl={props.baseUrl} />
       <div className="bookShow">
         <Typography className="back">
