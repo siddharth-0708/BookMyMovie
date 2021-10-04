@@ -4,21 +4,17 @@
     text-align: center;
     font-size: 1rem;
 }
-::-webkit-scrollbar {
-    width: 1px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: black;
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
+.flex-container {
+    display: flex;
+}
+.releaseGrid {
+    width: 76%;
+    margin: 16px;
+}
+.filter {
+    width: 24%;
+    margin: 16px;
+}
+.cardStyle {
+    text-align: center;
+}
