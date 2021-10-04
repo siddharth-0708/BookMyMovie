@@ -1,0 +1,24 @@
+.homeHeader {
+    background-color:#ff9999;
+    padding: 8px;
+    text-align: center;
+    font-size: 1rem;
+}
+::-webkit-scrollbar {
+    width: 1px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: black;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
