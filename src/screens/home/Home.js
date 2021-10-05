@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Home.css";
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
@@ -18,26 +18,52 @@ import {Button, Checkbox} from "@material-ui/core";
 
 export default function Home(){
     function GridApp(){
-        const tileData = [
-            {key:1, img: "http://placekitten.com/200/200", title: "cat", author: "john smith" },
-            {key :2, img: "http://placekitten.com/200/200", title: "cat", author: "mary smith" },
-            {key:3, img: "http://placekitten.com/200/200", title: "cat", author: "mary smith" },
-            {key:4, img: "http://placekitten.com/200/200", title: "cat", author: "john smith" },
-            {key :5, img: "http://placekitten.com/200/200", title: "cat", author: "mary smith" },
-            {key:6, img: "http://placekitten.com/200/200", title: "cat", author: "mary smith" },
-            {key:7, img: "http://placekitten.com/200/200", title: "cat", author: "john smith" },
-            {key :8, img: "http://placekitten.com/200/200", title: "cat", author: "mary smith" },
-            {key:9, img: "http://placekitten.com/200/200", title: "cat", author: "mary smith" }
-          ];
+      const [moviesData, setMoviesData] = React.useState([]);
+
+        useEffect(() => {
+          console.log("This is use effect of home page, Grid app section");
+          async function getGridData(){
+            try {
+                const rawPromise = fetch('http://localhost:8085/api/v1/movies?page=1&limit=17',{
+                    method: 'GET',
+                    headers: {
+                      "Accept": "application/json;charset=UTF-8"
+                    }
+                })
+                const rawResponse = await rawPromise;
+                var data = await rawResponse.json();
+                
+              if(rawResponse.ok){
+                console.log(data);
+                  const pub = data.movies.filter((data)=>{
+                      if(data.status === "PUBLISHED"){
+                        return true
+                      }
+                  })
+                  console.log(pub);
+                  setMoviesData(pub);
+              }else{
+                  const error = new Error();
+                  error.message = error.message ?  error.message : "something happened";
+                  throw error;
+              }
+        
+              } catch (error) {
+                  
+              }
+              return {};
+        }
+        getGridData();
+      },[]);
+      
         return (
             <div>
             <GridList className = "grid" style={{flexWrap: "nowrap"}} cellHeight={250} cols={6}>
-              {tileData.map(tile => (
-                <GridListTile key={tile.key} cols={tile.cols || 1}>
-                  <img src={tile.img} alt={tile.title} />
+              {moviesData.map(data => (
+                <GridListTile key={data.id} cols={1}>
+                  <img src={data.poster_url} alt={data.title} />
                   <GridListTileBar
-                    title={tile.title}
-                    subtitle={<span>by: {tile.author}</span>}
+                    title={data.title}
                   />
                 </GridListTile>
               ))}
@@ -46,29 +72,154 @@ export default function Home(){
         )
     }
     function GridRelease() {
-      const tileData = [
-        {key:1, img: "http://placekitten.com/200/200", title: "cat", author: "john smith" },
-        {key :2, img: "http://placekitten.com/200/200", title: "cat", author: "mary smith" },
-        {key:3, img: "http://placekitten.com/200/200", title: "cat", author: "mary smith" },
-        {key:4, img: "http://placekitten.com/200/200", title: "cat", author: "john smith" },
-        {key :5, img: "http://placekitten.com/200/200", title: "cat", author: "mary smith" },
-      ];
-      var locations = ["hyd","bang"]
+      const [moviesReleaseData, setMoviesReleaseData] = React.useState([]);
+      const [genresData, setGenresData] = React.useState([]);
+      const [artistsData, setArtistsData] = React.useState([]);
 
-      function handler(){
-        console.log("hellooo");
+      const [moveNameData, setMoveNameData] = React.useState("");
+      const [releaseStartData, setReleaseStartData] = React.useState("");
+      const [releaseEndData, setReleaseEndData] = React.useState("");
+      const [artistsCheckBoxData, setArtistsCheckBoxData] = React.useState({});
+      const [genresCheckBoxData, setGenresCheckBoxData] = React.useState({});
+
+      useEffect(() => {
+        const artistsObject = {};
+        artistsData.forEach((data)=>{
+          artistsObject[data.first_name] = false;
+        })
+        setArtistsCheckBoxData({...artistsObject});
+      },[artistsData]);
+
+      useEffect(() => {
+        const genresObject = {};
+        genresData.forEach((data)=>{
+          genresObject[data.genre] = false;
+        })
+        setGenresCheckBoxData({...genresObject});
+      },[genresData]);
+
+      useEffect(() => {
+        console.log("This is use effect of home page, Grid app section");
+        async function getReleasedData(){
+          try {
+              const rawPromise = fetch('http://localhost:8085/api/v1/movies?page=1&limit=17',{
+                  method: 'GET',
+                  headers: {
+                    "Accept": "application/json;charset=UTF-8"
+                  }
+              })
+              const rawResponse = await rawPromise;
+              var data = await rawResponse.json();
+              
+            if(rawResponse.ok){
+              console.log(data);
+                const rel = data.movies.filter((data)=>{
+                    if(data.status === "RELEASED"){
+                      return true
+                    }
+                })
+                console.log(rel);
+                setMoviesReleaseData(rel);
+            }else{
+                const error = new Error();
+                error.message = error.message ?  error.message : "something happened";
+                throw error;
+            }
+      
+            } catch (error) {
+                
+            }
+            return {};
       }
+      async function getGenereData(){
+        try {
+            const rawPromise = fetch('http://localhost:8085/api/v1/genres',{
+                method: 'GET',
+                headers: {
+                  "Accept": "application/json;charset=UTF-8"
+                }
+            })
+            const rawResponse = await rawPromise;
+            var data = await rawResponse.json();
+            
+          if(rawResponse.ok){
+            console.log(data);
+            setGenresData(data.genres);
+          }else{
+              const error = new Error();
+              error.message = error.message ?  error.message : "something happened";
+              throw error;
+          }
+    
+          } catch (error) {
+              
+          }
+          return {};
+    }
+      async function getArtistsData(){
+        try {
+            const rawPromise = fetch('http://localhost:8085/api/v1/artists?page=1&limit=20',{
+                method: 'GET',
+                headers: {
+                  "Accept": "application/json;charset=UTF-8"
+                }
+            })
+            const rawResponse = await rawPromise;
+            var data = await rawResponse.json();
+            
+          if(rawResponse.ok){
+            console.log(data);
+            setArtistsData(data.artists);
+          }else{
+              const error = new Error();
+              error.message = error.message ?  error.message : "something happened";
+              throw error;
+          }
+    
+          } catch (error) {
+              
+          }
+          return {};
+    }
+      getReleasedData();
+      getGenereData();
+      getArtistsData();
+      
+    },[]);
+    function onNameChange(event){
+      setMoveNameData(event.target.value);
+    }
+    function handleArtistCheckBoxChange(event){
+      const state = {...artistsCheckBoxData};
+      state[event.target.name] = event.target.checked;
+      setArtistsCheckBoxData({...state});
+    }
+    function handleGenreCheckBoxChange(event){
+      const state = {...genresCheckBoxData};
+      state[event.target.name] = event.target.checked;
+      setGenresCheckBoxData({...state});
+    }
+    function onReleaseStartChange(event){
+      setReleaseStartData(event.target.value);
+    }
+    function onReleaseEndChange(event){
+      setReleaseEndData(event.target.value);
+    }
+    function onImageClickedHandler(event){
+      console.log("Image clickeddddd", event)
+    }
       return (
         <div>
+          {console.log(releaseStartData,releaseEndData)}
           <div className="flex-container">
             <div className="releaseGrid">
               <GridList className="grid" cellHeight={350} cols={4}>
-                {tileData.map((tile) => (
-                  <GridListTile cols={tile.cols || 1}>
-                    <img src={tile.img} alt={tile.title} />
+                {moviesReleaseData.map((data) => (
+                  <GridListTile key={data.id} id = "releasedImage" onClick = {onImageClickedHandler} cols={1}>
+                    <img src={data.poster_url} alt={data.title} />
                     <GridListTileBar
-                      title={tile.title}
-                      subtitle={<span>by: {tile.author}</span>}
+                      title={data.title}
+                      subtitle={<span>Release Date {data.release_date}</span>}
                     />
                   </GridListTile>
                 ))}
@@ -85,7 +236,7 @@ export default function Home(){
                       <InputLabel htmlFor="movieName">
                       Movie Name
                       </InputLabel>
-                      <Input id = "movieName"/>
+                      <Input id = "movieName" value = {moveNameData} onChange = {onNameChange}/>
                   </FormControl>
                   <br />
                   <br />
@@ -93,10 +244,11 @@ export default function Home(){
                       <InputLabel htmlFor="genres">
                       Genres
                       </InputLabel>
-                      <Select>
-                        {["action", "horror", "romance", "thriller"].map((loc) => (
-                          <MenuItem key={loc} value={loc}>
-                            {loc}
+                      <Select placeholder = {"Genres"}>
+                        {genresData.map((data) => (
+                          <MenuItem key={data.id}>
+                              <Checkbox checked = {genresCheckBoxData[data.genre]} id = {data.genre} name = {data.genre} onChange={handleGenreCheckBoxChange}/>
+                              <label htmlFor = {data.genre}> {data.genre}</label>
                           </MenuItem>
                         ))}
                       </Select>
@@ -107,11 +259,11 @@ export default function Home(){
                       <InputLabel htmlFor="artists">
                       Artists
                       </InputLabel>
-                      <Select>
-                        {["alia bhaat", "kim shin", "kohli", "salman"].map((loc) => (
-                          <MenuItem key={loc} value={loc}>
-                              <Checkbox checked = {true} value = {loc} />
-                              {loc}
+                      <Select placeholder = {"Artists"}>
+                        {artistsData.map((data) => (
+                          <MenuItem key={data.id}>
+                              <Checkbox checked = {artistsCheckBoxData[data.first_name]} id = {data.first_name} name = {data.first_name} onChange={handleArtistCheckBoxChange}/>
+                              <label htmlFor = {data.first_name}> {data.first_name + " " + data.last_name}</label>
                           </MenuItem>
                         ))}
                       </Select>
@@ -126,6 +278,7 @@ export default function Home(){
                       <TextField
                       id = "releaseStart"
                       type = "Date"
+                      onChange = {onReleaseStartChange}
                     />
                   </FormControl>
                   <br/>
@@ -138,6 +291,7 @@ export default function Home(){
                       <TextField
                       id = "releaseEnd"
                       type = "Date"
+                      onChange = {onReleaseEndChange}
                     />
                   </FormControl>
                   <br/>
