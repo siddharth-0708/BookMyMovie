@@ -12,7 +12,7 @@ const Controller = () => {
   return (
     <Router>
       <div className="main-container">
-        {console.log("This is controller rendering")}
+        {console.log("This is controller")}
         <Header></Header>
         <Route
           exact

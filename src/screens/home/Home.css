@@ -21,3 +21,9 @@
 #releasedImage{
     cursor: pointer;
 }
+.gridTitle{
+    width: 100%;
+}
+.gridImage {
+    width: 100%;
+}

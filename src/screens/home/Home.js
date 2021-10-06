@@ -276,6 +276,7 @@ export default function Home(){
             return true;
           }
         })
+        //<Link to = {{pathname: `/movie/${data.id}`, state: { moviedetails: {data}}}}><img src={data.poster_url} alt={data.title} /></Link>
        // setMoviesReleaseData([...state]);  
        }
        setMoviesReleaseData([...movieFilter]);
@@ -288,9 +289,10 @@ export default function Home(){
               <GridList className="grid" cellHeight={350} cols={4}>
                 {moviesReleaseData.map((data) => (
                   <GridListTile key={data.id} id = "releasedImage" cols={1}>
-                    <Link to = {{pathname: `/movie/${data.id}`, state: { moviedetails: data}}}><img src={data.poster_url} alt={data.title} /> </Link>
-                    <GridListTileBar
+                    <Link to = {{pathname: `/movie/${data.id}`, state: { moviedetails: {data}}}}><img src={data.poster_url} className = "gridImage" alt={data.title} /></Link>
+                    <GridListTileBar 
                       title={data.title}
+                      className = "gridTitle"
                       subtitle={<span>Release Date {data.release_date}</span>}
                     />
                   </GridListTile>
