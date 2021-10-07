@@ -1,0 +1,19 @@
+.maincontainer{
+    display: flex;
+    flex-direction: row;
+}
+.leftSide{
+    flex: 20%;
+    margin-left: 10px;
+}
+.middleSide{
+    flex: 60%;
+    margin-left: 10px;
+}
+.rightSide{
+    flex: 20%;
+    margin-right: 10px;
+}
+.leftImage{
+    width: 80%;
+}
