@@ -194,10 +194,10 @@ const BookShow = (props) => {
   return (
     <div>
       {console.log("renderinggggg")}
-      <Header baseUrl={props.baseUrl} />
+      {/*<Header baseUrl={props.baseUrl} />*/}
       <div className="bookShow">
         <Typography className="back">
-          <Link to={"/movie/" + props.match.params.id}>
+          <Link to={{pathname: `/movie/+ ${props.match.params.id}`, state: { moviedetails: props.match.params.id}}}>
             &#60; Back to Movie Details
           </Link>
         </Typography>

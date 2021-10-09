@@ -89,12 +89,12 @@ export default function LoginModal(props){
                   closeModal();
               }else{
                   const error = new Error();
-                  error.message = error.message ?  error.message : "something happened";
+                  error.message = result.message ?  result.message : "something happened";
                   throw error;
               }
         
               } catch (error) {
-                  
+                  alert(error);
               }
         }
         login();

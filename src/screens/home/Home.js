@@ -115,7 +115,7 @@ export default function Home(props){
           }
     
           } catch (error) {
-              
+            alert(error);
           }
           return {};
     }
@@ -135,12 +135,12 @@ export default function Home(props){
           setGenresData(data.genres);
         }else{
             const error = new Error();
-            error.message = error.message ?  error.message : "something happened";
+            error.message = data.message ?  data.message : "something happened";
             throw error;
         }
   
         } catch (error) {
-            
+          alert(error);
         }
         return {};
   }
@@ -160,12 +160,12 @@ export default function Home(props){
           setArtistsData(data.artists);
         }else{
             const error = new Error();
-            error.message = error.message ?  error.message : "something happened";
+            error.message = data.message ?  data.message : "something happened";
             throw error;
         }
   
         } catch (error) {
-            
+          alert(error);
         }
         return {};
   }
@@ -294,7 +294,7 @@ export default function Home(props){
               <GridList className="grid" cellHeight={350} cols={4}>
                 {moviesReleaseData.map((data) => (
                   <GridListTile key={data.id} id = "releasedImage" cols={1}>
-                    <Link to = {{pathname: `/movie/${data.id}`,state: { moviedetails: data.id}}} params={{ testvalue: "hello" }}><img src={data.poster_url} className = "gridImage" alt={data.title} /></Link>
+                    <Link to = {{pathname: `/movie/${data.id}`,state: { moviedetails: data.id}}}><img src={data.poster_url} className = "gridImage" alt={data.title} /></Link>
                     <GridListTileBar 
                       title={data.title}
                       className = "gridTitle"

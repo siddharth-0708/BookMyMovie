@@ -20,12 +20,15 @@ const Controller = () => {
   function hideButtonInHeader(){
     setUpdateDom(false);
   }
+ function logoutIsSuccessful(){
+  setIsLoggedIn(false);
+ } 
 
   return (
     <Router>
       <div className="main-container">
       {console.log("This is controller")}
-        <Header updateBtn = {updateDom} isLoggedIn = {isLoggedIn} loginIsSuccessful = {loginIsSuccessful}></Header>
+        <Header updateBtn = {updateDom} isLoggedIn = {isLoggedIn} logoutIsSuccessful = { logoutIsSuccessful} loginIsSuccessful = {loginIsSuccessful}></Header>
         <Route
           exact
           path="/"
