@@ -8,20 +8,32 @@ import Header from "../common/header/Header";
 
 const Controller = () => {
   const baseUrl = "/api/v1/";
+  const [updateDom, setUpdateDom] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
+  function showButtonInHeader(){
+    setUpdateDom(true)
+  }
+  function loginIsSuccessful(){
+    setIsLoggedIn(true);
+  }
+  function hideButtonInHeader(){
+    setUpdateDom(false);
+  }
 
   return (
     <Router>
       <div className="main-container">
-        {console.log("This is controller")}
-        <Header></Header>
+      {console.log("This is controller")}
+        <Header updateBtn = {updateDom} isLoggedIn = {isLoggedIn} loginIsSuccessful = {loginIsSuccessful}></Header>
         <Route
           exact
           path="/"
-          render={(props) => <Home {...props} baseUrl={baseUrl} />}
+          render={(props) => <Home {...props} hideButtonInHeader = {hideButtonInHeader} baseUrl={baseUrl} />}
         />
         <Route
           path="/movie/:id"
-          render={(props) => <Details {...props} baseUrl={baseUrl} />}
+          render={(props) => <Details {...props} headerCall = {showButtonInHeader} baseUrl={baseUrl} />}
         />
         <Route
           path="/bookshow/:id"

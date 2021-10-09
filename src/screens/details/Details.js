@@ -9,6 +9,7 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import { Link } from "react-router-dom";
 
 export default function Details(props){
+    console.log(props);
     const id = props.location.state.moviedetails;
     const [poster, setPoster] = React.useState("");
     const [title, setTitle] = React.useState("");
@@ -35,6 +36,10 @@ export default function Details(props){
         const arr = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/);
         return undefined !== arr[2] ? arr[2].split(/[^\w-]/i)[0] : arr[0];
       }
+      useEffect(() => {
+        props.headerCall();
+    },[]);
+
     useEffect(() => {
         async function getMoviesData(){
             try {

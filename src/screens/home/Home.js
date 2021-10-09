@@ -14,10 +14,15 @@ import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import {Button, Checkbox} from "@material-ui/core";
-import {Link} from "react-router-dom"
+import {Link} from "react-router-dom";
 
 
-export default function Home(){
+export default function Home(props){
+    var hideButton = props.hideButtonInHeader;
+    
+    useEffect(() => {
+      hideButton();
+    });
     function GridApp(){
       const [moviesData, setMoviesData] = React.useState([]);
 
@@ -208,7 +213,7 @@ export default function Home(){
       setReleaseEndData(event.target.value);
     }
     function onImageClickedHandler(event){
-      console.log("Image clickeddddd", event)
+      console.log("Image clickeddddd")
     }
     async function applyFiltersHandler(){
       //WHY WITH STATE IT DID NOT WORK??? moviesReleaseData REMAINED SAME? TOO MUCH RE RENDERING?
@@ -289,7 +294,7 @@ export default function Home(){
               <GridList className="grid" cellHeight={350} cols={4}>
                 {moviesReleaseData.map((data) => (
                   <GridListTile key={data.id} id = "releasedImage" cols={1}>
-                    <Link to = {{pathname: `/movie/${data.id}`, state: { moviedetails: data.id}}}><img src={data.poster_url} className = "gridImage" alt={data.title} /></Link>
+                    <Link to = {{pathname: `/movie/${data.id}`,state: { moviedetails: data.id}}} params={{ testvalue: "hello" }}><img src={data.poster_url} className = "gridImage" alt={data.title} /></Link>
                     <GridListTileBar 
                       title={data.title}
                       className = "gridTitle"

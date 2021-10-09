@@ -12,6 +12,7 @@ import Modal from 'react-modal';
 export default function LoginModal(props){
   const [openModal, setIsOpen] = React.useState(true);
   const [value, setValue] = React.useState('one');
+  var loggedIn = props.loginIsSuccessful;
 
     Modal.setAppElement('#root');
     
@@ -60,8 +61,6 @@ export default function LoginModal(props){
         const [reqEmail, setreqEmail] = useState("dispNone");
         const [reqContact, setreqContact] = useState("dispNone");
 
-
-
         function onLoginClick(e){
           username === "" ? setreqUsername("dispBlock") : setreqUsername("dispNone");
           password === "" ? setreqPassword("dispBlock") : setreqPassword("dispNone");
@@ -69,7 +68,37 @@ export default function LoginModal(props){
           if (username === "" || password === "") {
             return;
           }
+          async function login(){
+            var params = window.btoa(`${username}:${password}`);
+              try {
+                const rawPromise = fetch('http://localhost:8085/api/v1/auth/login',{
+                    method: 'POST',
+                    headers: {
+                      "Accept": "application/json;charset=UTF-8",
+                      "authorization" : `Basic ${params}`
+                    }
+                })
+                const rawResponse = await rawPromise;
+                var result = await rawResponse.json();
+                
+              if(rawResponse.ok){
+                  console.log(result);
+                  window.sessionStorage.setItem('user-details', JSON.stringify(result));
+                  window.sessionStorage.setItem('token-details', JSON.stringify(rawResponse.headers.get("access-token")));
+                  loggedIn();
+                  closeModal();
+              }else{
+                  const error = new Error();
+                  error.message = error.message ?  error.message : "something happened";
+                  throw error;
+              }
+        
+              } catch (error) {
+                  
+              }
         }
+        login();
+      }
         function onRegisterClick(e){
 
           password === "" ? setreqPassword("dispBlock") : setreqPassword("dispNone");
@@ -81,7 +110,44 @@ export default function LoginModal(props){
           if (password === "" || firstName === "" || lastName === "" || email === "" || contact === "") {
             return;
           }
+
+          async function registerSubmit(){
+            const params = {
+                "email_address": email,
+                "first_name": firstName,
+                "last_name": lastName,
+                "mobile_number": contact,
+                "password": password
+              }
+              console.log(params);
+              try {
+                const rawPromise = fetch('http://localhost:8085/api/v1/signup',{
+                     
+                body: JSON.stringify(params),
+                      method: 'POST',
+                      headers: {
+                      "Accept": "application/json",
+                      "Content-Type": "application/json;charset=UTF-8"
+                    }
+                })
+                const rawResponse = await rawPromise;
+                var result = await rawResponse.json();    
+                        
+              if(rawResponse.ok){ 
+                  console.log("successful", result);
+              }else{
+                  const error = new Error();
+                  error.message = error.message ?  error.message : "something happened";
+                  throw error;
+              }
+        
+              } catch (error) {
+                  
+              }
         }
+        registerSubmit();
+
+    }
 
         if(value === "one"){
           return (
