@@ -64,6 +64,21 @@ export default function Header(props){
     function hideLogoutFunc() {
         setShowLogout(false);
     }
+    function ButtonComponent() {
+        if(!showLogout){
+            return(
+                <div className ="bookButton">
+                    {showBookShowBtn ? <Button color = "primary" onClick = {openModalHandler} variant="contained">Book Show</Button> : null}
+                </div>
+            )
+        }else{
+            return(
+                <div className ="bookButton">
+                    {showBookShowBtn ? <Link to = {{pathname: `/bookshow/${key}`}}><Button color = "primary" variant="contained">Book Show</Button></Link> : null}
+                </div>
+            )
+        }
+    }
     useEffect(() => {
         if(props.updateBtn){
             showBookShowButton();
@@ -82,9 +97,7 @@ export default function Header(props){
             <div className ="logButton">
             <Button color = "default" variant="contained" onClick = {openModalHandler}>{showLogout ? "Logout": "Login"}</Button>
             </div>
-            <div className ="bookButton">
-            {showBookShowBtn ? <Link to = {{pathname: `/bookshow/${key}`}}><Button color = "primary" variant="contained">Book Show</Button></Link> : null}
-            </div>
+            <ButtonComponent></ButtonComponent>
             {console.log("This is header openModal ", openModal)}
             {openModal ? <LoginModal closeModal = {onCloseModalHandler} loginIsSuccessful = {props.loginIsSuccessful} showLogout = {showLogoutFunc}></LoginModal>: null}
         </div>
