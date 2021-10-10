@@ -11,23 +11,22 @@ const Controller = () => {
   const [updateDom, setUpdateDom] = React.useState(false);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
-  function showButtonInHeader(){
-    setUpdateDom(true)
+  function showButtonInHeader() {
+    setUpdateDom(true);
   }
-  function loginIsSuccessful(){
+  function loginIsSuccessful() {
     setIsLoggedIn(true);
   }
-  function hideButtonInHeader(){
+  function hideButtonInHeader() {
     setUpdateDom(false);
   }
- function logoutIsSuccessful(){
-  setIsLoggedIn(false);
- } 
+  function logoutIsSuccessful() {
+    setIsLoggedIn(false);
+  } 
 
   return (
     <Router>
       <div className="main-container">
-      {console.log("This is controller")}
         <Header updateBtn = {updateDom} isLoggedIn = {isLoggedIn} logoutIsSuccessful = { logoutIsSuccessful} loginIsSuccessful = {loginIsSuccessful}></Header>
         <Route
           exact

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./LoginModal.css";
+import "./Modal.css";
 import { Tab } from "@material-ui/core";
 import { Tabs } from "@material-ui/core";
 import { FormControl } from "@material-ui/core";

@@ -2,11 +2,10 @@ import React, { useEffect,useState } from "react";
 import logo from '../../assets/logo.svg';
 import "./Header.css";
 import {Button} from "@material-ui/core";
-import LoginModal from "../../screens/modals/loginModal/LoginModal";
+import Modal from "../../screens/modals/Modal";
 import {Link} from "react-router-dom";
 
 export default function Header(props){
-    console.log("This is header props", props);
     const [openModal, setIsOpen] = React.useState(false);
     const[showBookShowBtn, setBookShowBtn] = useState(false);
     const[showLogout, setShowLogout] = useState(false);
@@ -15,7 +14,6 @@ export default function Header(props){
 
     function openModalHandler() {
         if(showLogout){
-
             async function logout(){
                 const accessToken = JSON.parse(window.sessionStorage.getItem("token-details"));
                   try {
@@ -40,7 +38,7 @@ export default function Header(props){
                   }
             
                   } catch (error) {
-                      
+                      alert(error);
                   }
             }
             logout();
@@ -48,7 +46,6 @@ export default function Header(props){
         }
         setIsOpen(true);
       }
-    
     function onCloseModalHandler() {
         setIsOpen(false);
     }
@@ -98,9 +95,7 @@ export default function Header(props){
             <Button color = "default" variant="contained" onClick = {openModalHandler}>{showLogout ? "Logout": "Login"}</Button>
             </div>
             <ButtonComponent></ButtonComponent>
-            {console.log("This is header openModal ", openModal)}
-            {openModal ? <LoginModal closeModal = {onCloseModalHandler} loginIsSuccessful = {props.loginIsSuccessful} showLogout = {showLogoutFunc}></LoginModal>: null}
+            {openModal ? <Modal closeModal = {onCloseModalHandler} loginIsSuccessful = {props.loginIsSuccessful} showLogout = {showLogoutFunc}></Modal>: null}
         </div>
     ) 
-       
 }

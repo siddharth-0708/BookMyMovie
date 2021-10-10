@@ -9,7 +9,6 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import { Link } from "react-router-dom";
 
 export default function Details(props){
-    console.log(props);
     const id = props.location.state.moviedetails;
     const [poster, setPoster] = React.useState("");
     const [title, setTitle] = React.useState("");
@@ -53,7 +52,6 @@ export default function Details(props){
                 var data = await rawResponse.json();
                 
               if(rawResponse.ok){
-                console.log(data);
                 setPoster(data.poster_url);
                 setTitle(data.title);
                 setGenres(data.genres);

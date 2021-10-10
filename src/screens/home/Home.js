@@ -9,16 +9,31 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import Select from "@material-ui/core/Select";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import {Button, Checkbox} from "@material-ui/core";
 import {Link} from "react-router-dom";
+import { withStyles } from "@material-ui/core/styles";
+import PropTypes from "prop-types";
 
+const styles = (theme) => ({
+  root: {
+    margin: theme.spacing.unit,
+    minWidth: 240,
+    position: 'absolute',
+    right: 0,
+    textAlign: "center"
+  },
+  heading: {
+    color: theme.palette.primary.light
+  }
+});
 
-export default function Home(props){
+ function Home(props){
     var hideButton = props.hideButtonInHeader;
+
+    const { classes } = props;
     
     useEffect(() => {
       hideButton();
@@ -27,7 +42,6 @@ export default function Home(props){
       const [moviesData, setMoviesData] = React.useState([]);
 
         useEffect(() => {
-          console.log("This is use effect of home page, Grid app section");
           async function getGridData(){
             try {
                 const rawPromise = fetch('http://localhost:8085/api/v1/movies?page=1&limit=17',{
@@ -40,13 +54,12 @@ export default function Home(props){
                 var data = await rawResponse.json();
                 
               if(rawResponse.ok){
-                console.log(data);
                   const pub = data.movies.filter((data)=>{
                       if(data.status === "PUBLISHED"){
                         return true
                       }
+                      return false
                   })
-                  console.log(pub);
                   setMoviesData(pub);
               }else{
                   const error = new Error();
@@ -55,7 +68,7 @@ export default function Home(props){
               }
         
               } catch (error) {
-                  
+                  alert(error);
               }
               return {};
         }
@@ -100,12 +113,11 @@ export default function Home(props){
             var data = await rawResponse.json();
             
           if(rawResponse.ok){
-            console.log("RELEASEEEE");
-            console.log(data);
               const rel = data.movies.filter((data)=>{
                   if(data.status === "RELEASED"){
                     return true
                   }
+                  return false
               })
               setMoviesReleaseData(rel);
           }else{
@@ -131,7 +143,6 @@ export default function Home(props){
           var data = await rawResponse.json();
           
         if(rawResponse.ok){
-          console.log(data);
           setGenresData(data.genres);
         }else{
             const error = new Error();
@@ -156,7 +167,6 @@ export default function Home(props){
           var data = await rawResponse.json();
           
         if(rawResponse.ok){
-          console.log(data);
           setArtistsData(data.artists);
         }else{
             const error = new Error();
@@ -172,72 +182,63 @@ export default function Home(props){
 
       useEffect(() => {
         const artistsObject = {};
-        artistsData.forEach((data)=>{
+        artistsData.forEach((data) => {
           artistsObject[data.first_name] = false;
-        })
-        setArtistsCheckBoxData({...artistsObject});
-      },[artistsData]);
+        });
+        setArtistsCheckBoxData({ ...artistsObject });
+      }, [artistsData]);
 
       useEffect(() => {
         const genresObject = {};
-        genresData.forEach((data)=>{
+        genresData.forEach((data) => {
           genresObject[data.genre] = false;
-        })
-        setGenresCheckBoxData({...genresObject});
-      },[genresData]);
+        });
+        setGenresCheckBoxData({ ...genresObject });
+      }, [genresData]);
 
       useEffect(() => {
-        console.log("This is use effect of home page, Grid app section");
         getReleasedData();
         getGenereData();
         getArtistsData();
-      
-    },[]);
-    function onNameChange(event){
-      setMoveNameData(event.target.value);
-    }
-    function handleArtistCheckBoxChange(event){
-      const state = {...artistsCheckBoxData};
-      state[event.target.name] = event.target.checked;
-      setArtistsCheckBoxData({...state});
-    }
-    function handleGenreCheckBoxChange(event){
-      const state = {...genresCheckBoxData};
-      state[event.target.name] = event.target.checked;
-      setGenresCheckBoxData({...state});
-    }
-    function onReleaseStartChange(event){
-      setReleaseStartData(event.target.value);
-    }
-    function onReleaseEndChange(event){
-      setReleaseEndData(event.target.value);
-    }
-    function onImageClickedHandler(event){
-      console.log("Image clickeddddd")
-    }
+      }, []);
+      function onNameChange(event) {
+        setMoveNameData(event.target.value);
+      }
+      function handleArtistCheckBoxChange(event) {
+        const state = { ...artistsCheckBoxData };
+        state[event.target.name] = event.target.checked;
+        setArtistsCheckBoxData({ ...state });
+      }
+      function handleGenreCheckBoxChange(event) {
+        const state = { ...genresCheckBoxData };
+        state[event.target.name] = event.target.checked;
+        setGenresCheckBoxData({ ...state });
+      }
+      function onReleaseStartChange(event) {
+        setReleaseStartData(event.target.value);
+      }
+      function onReleaseEndChange(event) {
+        setReleaseEndData(event.target.value);
+      }
     async function applyFiltersHandler(){
-      //WHY WITH STATE IT DID NOT WORK??? moviesReleaseData REMAINED SAME? TOO MUCH RE RENDERING?
-      //NOT RESETTING!!! THERE IS SOME PROBLEM WHEN MULTIPLE SET FUNCTIONS ARE CALLED TOGETHER
-     // var state  = await getReleasedData();
-      console.log("snokkeeeeee", moviesReleaseData)
       var movieFilter = [...moviesReleaseData];
 
       if(moveNameData.length > 0){
         movieFilter = movieFilter.filter((data)=>{
-          if(data.title == moveNameData){
+          if(data.title === moveNameData){
             return true;
           }
+          return false;
         })
-        //setMoviesReleaseData([...state]);  
       }
       const genresArray = [];
-      for(var key in genresCheckBoxData){
+      for(let key in genresCheckBoxData){
         if(genresCheckBoxData[key] === true){
           genresArray.push(key);
         }
       }
       if(genresArray.length > 0){
-        var state = movieFilter.filter((data)=>{
+        let state = movieFilter.filter((data)=>{
           for(let i of genresArray){
             if(data.genres.includes(i)){
               return true;
@@ -248,13 +249,13 @@ export default function Home(props){
       }
 
       const artistsArray = [];
-      for(var key in artistsCheckBoxData){
+      for(let key in artistsCheckBoxData){
         if(artistsCheckBoxData[key] === true){
           artistsArray.push(key);
         }
       }
       if(artistsArray.length > 0){
-        var state = movieFilter.filter((data)=>{
+        let state = movieFilter.filter((data)=>{
           for(let i of artistsArray){
             for(var artist of data.artists){
               if(artist["first_name"] === i){
@@ -271,9 +272,7 @@ export default function Home(props){
           if(Date.parse(data.release_date) >= Date.parse(releaseStartData)){
             return true;
           }
-        })
-        //console.log("release start date is set ", moviesReleaseData);    
-  
+        })  
       }
       if(releaseEndData.length > 0){
          movieFilter = movieFilter.filter((data)=>{
@@ -281,14 +280,11 @@ export default function Home(props){
             return true;
           }
         })
-        //<Link to = {{pathname: `/movie/${data.id}`, state: { moviedetails: {data}}}}><img src={data.poster_url} alt={data.title} /></Link>
-       // setMoviesReleaseData([...state]);  
        }
        setMoviesReleaseData([...movieFilter]);
     }
       return (
         <div>
-          {console.log(releaseStartData,releaseEndData)}
           <div className="flex-container">
             <div className="releaseGrid">
               <GridList className="grid" cellHeight={350} cols={4}>
@@ -305,9 +301,9 @@ export default function Home(props){
               </GridList>
             </div>
             <div className="filter">
-              <Card className="cardStyle" style = {{textAlign: "center", width: "280px"}}>
+              <Card className= {classes.root}>
                 <CardContent>
-                  <Typography variant="headline" component="h2">
+                  <Typography variant="headline" className = {classes.heading} component="h2">
                     FIND MOVIES BY:
                   </Typography>
                   <br />
@@ -392,4 +388,8 @@ export default function Home(props){
         </div>
     )    
 }
+Home.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+export default withStyles(styles)(Home);
 
