@@ -21,12 +21,11 @@ const styles = (theme) => ({
   root: {
     margin: theme.spacing.unit,
     minWidth: 240,
-    position: 'absolute',
-    right: 0,
-    textAlign: "center"
+    maxWidth: 240
   },
   heading: {
-    color: theme.palette.primary.light
+    color: theme.palette.primary.light,
+    fontSize: '17px',
   }
 });
 
@@ -301,13 +300,14 @@ const styles = (theme) => ({
               </GridList>
             </div>
             <div className="filter">
-              <Card className= {classes.root}>
-                <CardContent>
+              <div className = "filterContent">
+                <Card>
+                <CardContent className= {classes.root}>
                   <Typography variant="headline" className = {classes.heading} component="h2">
                     FIND MOVIES BY:
                   </Typography>
                   <br />
-                  <FormControl className = "formControl">
+                  <FormControl className = "formContents">
                       <InputLabel htmlFor="movieName">
                       Movie Name
                       </InputLabel>
@@ -315,7 +315,7 @@ const styles = (theme) => ({
                   </FormControl>
                   <br />
                   <br />
-                  <FormControl className = "formControl">
+                  <FormControl className = "formContents">
                       <InputLabel htmlFor="genres">
                       Genres
                       </InputLabel>
@@ -330,7 +330,7 @@ const styles = (theme) => ({
                   </FormControl>
                   <br />
                   <br />
-                  <FormControl className = "formControl">
+                  <FormControl className = "formContents">
                       <InputLabel htmlFor="artists">
                       Artists
                       </InputLabel>
@@ -345,7 +345,7 @@ const styles = (theme) => ({
                   </FormControl>
                   <br />
                   <br />
-                  <FormControl className = "formControl">
+                  <FormControl className = "formContents">
                       <InputLabel shrink = {true} htmlFor="releaseStart">
                       Release Date Start
                       </InputLabel>
@@ -358,7 +358,7 @@ const styles = (theme) => ({
                   </FormControl>
                   <br/>
                   <br />
-                  <FormControl className = "formControl">
+                  <FormControl className = "formContents">
                       <InputLabel shrink = {true} htmlFor="releaseEnd">
                       Release Date End
                       </InputLabel>
@@ -369,12 +369,14 @@ const styles = (theme) => ({
                       onChange = {onReleaseEndChange}
                     />
                   </FormControl>
-                  <br/>
-                  <br/>
-                  <br />
-                  <Button color = "primary" variant="contained" onClick = {applyFiltersHandler}>APPLY</Button>
                 </CardContent>
-              </Card>
+                <br/>
+                  <br/>
+                  <div className = "mybutton">
+                  <Button color = "primary" style = {{width: "100%"}} variant="contained" onClick = {applyFiltersHandler}>APPLY</Button>
+                  </div>  
+                 </Card>
+              </div>
             </div>
           </div>
         </div>
