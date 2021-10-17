@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect } from "react";
 import Typography from "@material-ui/core/Typography";
 import "./Details.css";
 import YouTube from 'react-youtube';
@@ -24,7 +24,7 @@ export default function Details(props){
     const [starColor, setStarColor] = React.useState(["nocolorStar","nocolorStar","nocolorStar","nocolorStar","nocolorStar"]);
 
     function changeStarColorHandler(event){
-        var state = parseInt(event.target.id);
+        var state = parseInt(event.target.id, 10);
         var starTemp = [];
         for(let i = 0; i < starColor.length; i++){
             i <= state ? starTemp.push("colorStar") : starTemp.push("nocolorStar");

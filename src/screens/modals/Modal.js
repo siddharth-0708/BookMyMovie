@@ -17,7 +17,6 @@ export default function LoginModal(props){
     Modal.setAppElement('#root');
     
     useEffect(() => {
-      console.log("This is use effect of modal")
       isOpenModal();
     },[]);
 
@@ -82,7 +81,6 @@ export default function LoginModal(props){
                 var result = await rawResponse.json();
                 
               if(rawResponse.ok){
-                  console.log(result);
                   window.sessionStorage.setItem('user-details', JSON.stringify(result));
                   window.sessionStorage.setItem('token-details', JSON.stringify(rawResponse.headers.get("access-token")));
                   loggedIn();
@@ -119,7 +117,6 @@ export default function LoginModal(props){
                 "mobile_number": contact,
                 "password": password
               }
-              console.log(params);
               try {
                 const rawPromise = fetch('http://localhost:8085/api/v1/signup',{
                      
@@ -131,10 +128,9 @@ export default function LoginModal(props){
                     }
                 })
                 const rawResponse = await rawPromise;
-                var result = await rawResponse.json();    
                         
-              if(rawResponse.ok){ 
-                  console.log("successful", result);
+              if(rawResponse.ok){
+                  alert("Registration Sucessfull! Please login"); 
               }else{
                   const error = new Error();
                   error.message = error.message ?  error.message : "something happened";
@@ -152,7 +148,6 @@ export default function LoginModal(props){
         if(value === "one"){
           return (
             <div className = "loginPanel">
-            {console.log("This is loginPanel rendering again")}
             <FormControl required className = "formControl">
               <InputLabel htmlFor="username">
                username
@@ -246,7 +241,6 @@ export default function LoginModal(props){
 
     return (
         <div>
-          {console.log("This is modal rendering again")}
           <Modal
             isOpen={openModal}
             onRequestClose={closeModal}
