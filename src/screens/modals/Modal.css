@@ -16,3 +16,8 @@
 .red {
     color: red;
 }
+.dispBlockRegister {
+    display: block;
+    margin: auto;
+    color:black;
+}

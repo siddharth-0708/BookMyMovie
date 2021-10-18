@@ -59,6 +59,7 @@ export default function LoginModal(props){
         const [reqLastName, setreqLastName] = useState("dispNone");
         const [reqEmail, setreqEmail] = useState("dispNone");
         const [reqContact, setreqContact] = useState("dispNone");
+        const [registerContact, setRegisterContact] = useState("dispNone");
 
         function onLoginClick(e){
           username === "" ? setreqUsername("dispBlock") : setreqUsername("dispNone");
@@ -130,7 +131,7 @@ export default function LoginModal(props){
                 const rawResponse = await rawPromise;
                         
               if(rawResponse.ok){
-                  alert("Registration Sucessfull! Please login"); 
+                  setRegisterContact("dispBlockRegister");
               }else{
                   const error = new Error();
                   error.message = error.message ?  error.message : "something happened";
@@ -138,13 +139,12 @@ export default function LoginModal(props){
               }
         
               } catch (error) {
-                  
+                  alert(error);
               }
         }
         registerSubmit();
 
     }
-
         if(value === "one"){
           return (
             <div className = "loginPanel">
@@ -231,6 +231,8 @@ export default function LoginModal(props){
               </FormHelperText>
           </FormControl>
           <br/>
+          <br/>
+          <span className={registerContact}>Registration successfull. Please login!</span>
           <br/>
           <br/>
           <Button color = "primary" variant="contained" onClick = {onRegisterClick}>Register</Button>
